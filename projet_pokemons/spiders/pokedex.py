@@ -18,16 +18,30 @@ class PokedexSpider(scrapy.Spider):
 
         # pagination
         next_page = response.css('.page-numbers a.next::attr(href)').get()
+        # condition : s'il y a une page suivante...
         if next_page:
+            # suit la page suivante
             yield response.follow(url=next_page, callback=self.parse)
 
 # 3. Scraper des données sur des pages détaillées
     def parse_poke_page(self, response):
         # extraire les données
-        dimensions = response.css('.product_dimensions::text').get()  # voir le RegexOne
+
+        dimensions = response.css('.product_dimensions::text').get()
+        #  je donne directment la valeur None à L x l x H
+        length = width = height = None
+        # condition : si dimensions n'est pas None, alors attribut les valeurs fournit dans le site
+        if dimensions is not None:
+            # TODO: aidé avec GPT (revoir RegEx)
+            # extraire les dimensions individuelles (regex)
+            dimension_values = re.findall(r'\d+\.\d+|\d+', dimensions)
+            # assigne les valeurs à L, l et H 
+            length = dimension_values[0] if dimension_values else None
+            width = dimension_values[1] if len(dimension_values) > 1 else None
+            height = dimension_values[2] if len(dimension_values) > 2 else None
 
         # retourne les données
-        result = {
+        yield {
             'name': response.css('.product_title::text').get(),
             'price': response.css('p.price span.woocommerce-Price-amount::text').get(),
             'descript': response.css('.woocommerce-product-details__short-description p::text').get(),
@@ -35,16 +49,7 @@ class PokedexSpider(scrapy.Spider):
             'categories': response.css('.posted_in a::text').getall(),
             'sku': response.css('p.in-stock::text').get(),
             'weight': response.css('.product_weight::text').get(),
-            # 'dimensions': dimensions
+            'length' : length,
+            'width' : width,
+            'height' : height
         }
-
-        # TODO: aidé avec GPT (revoir RegEx)
-        # extraire les dimensions individuelles (regex)
-        dimension_values = re.findall(r'\d+\.\d+|\d+', dimensions)
-
-        # assigne les valeurs à L, l et H 
-        result['length'] = dimension_values[0] if dimension_values else None
-        result['width'] = dimension_values[1] if len(dimension_values) > 1 else None
-        result['height'] = dimension_values[2] if len(dimension_values) > 2 else None
-
-        yield result
