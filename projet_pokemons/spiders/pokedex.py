@@ -66,4 +66,5 @@ class PokedexSpider(scrapy.Spider):
                 }
 
             yield result
-            # TODO: Attention! n'affiche pas les pokémons qui n'ont pas de valeurs dans 'dimensions'. Il y en a 17 donc le code ne retourne que 738 pokémons
+            # TODO: Attention! n'affiche pas les pokémons qui n'ont pas de valeurs dans 'dimensions'. 
+            # Il y en a 17 donc le code ne retourne que 738 pokémons au lieu de 755
