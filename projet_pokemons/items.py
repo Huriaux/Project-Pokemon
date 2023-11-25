@@ -7,12 +7,6 @@ import scrapy
 
 
 class ProjetPokemonsItem(scrapy.Item):
-    # define the fields for your item here like:
-    name = scrapy.Field()
-    pass
-
-
-class PokeItem(scrapy.item):
     name = scrapy.Field()
     price = scrapy.Field()
     descript = scrapy.Field()
@@ -20,5 +14,6 @@ class PokeItem(scrapy.item):
     categories = scrapy.Field()
     sku = scrapy.Field()
     weight = scrapy.Field()
-    dimensions = scrapy.Field()
-    dimensions = scrapy.Field()
+    length = scrapy.Field()
+    width = scrapy.Field()
+    height = scrapy.Field()

@@ -34,22 +34,36 @@ class PokedexSpider(scrapy.Spider):
         if dimensions is not None:
             # TODO: aidé avec GPT (revoir RegEx)
             # extraire les dimensions individuelles (regex)
-            dimension_values = re.findall(r'\d+\.\d+|\d+', dimensions)
+            dimensions = re.findall(r'\d+\.\d+|\d+', dimensions)
             # assigne les valeurs à L, l et H 
-            length = dimension_values[0] if dimension_values else None
-            width = dimension_values[1] if len(dimension_values) > 1 else None
-            height = dimension_values[2] if len(dimension_values) > 2 else None
+            length = dimensions[0] if dimensions else None
+            width = dimensions[1] if len(dimensions) > 1 else None
+            height = dimensions[2] if len(dimensions) > 2 else None
 
         # retourne les données
-        yield {
-            'name': response.css('.product_title::text').get(),
-            'price': response.css('p.price span.woocommerce-Price-amount::text').get(),
-            'descript': response.css('.woocommerce-product-details__short-description p::text').get(),
-            'tags': response.css('span.tagged_as a::text').getall(),
-            'categories': response.css('.posted_in a::text').getall(),
-            'sku': response.css('p.in-stock::text').get(),
-            'weight': response.css('.product_weight::text').get(),
-            'length' : length,
-            'width' : width,
-            'height' : height
-        }
+            name = response.css('.product_title::text').get()
+            price = response.css('p.price span.woocommerce-Price-amount::text').get(),
+            descript = response.css('.woocommerce-product-details__short-description p::text').get(),
+            tags = response.css('span.tagged_as a::text').getall(),
+            categories = response.css('.posted_in a::text').getall(),
+            sku = response.css('p.in-stock::text').get(),
+            weight = response.css('.product_weight::text').get(),
+            length = length,
+            width = width,
+            height = height,
+
+            result = {
+                'name' : name,
+                'price' : price,
+                'descript' : descript,
+                'tags' : tags,
+                'categories' : categories,
+                'sku' : sku,
+                'weight' : weight,
+                'length' : length,
+                'width' : width,
+                'height' : height
+                }
+
+            yield result
+            # TODO: Attention! n'affiche pas les pokémons qui n'ont pas de valeurs dans 'dimensions'. Il y en a 17 donc le code ne retourne que 738 pokémons
