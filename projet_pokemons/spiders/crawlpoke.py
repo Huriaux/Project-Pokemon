@@ -51,7 +51,7 @@ class CrawlpokeSpider(CrawlSpider):
         l.add_css("sku", 'p.in-stock::text')
         l.add_css("weight", '.product_weight::text')
 
-        # ici ça change pas non plus
+        # ici ça change pas non plus # TODO: aide GPT
         if dimensions and isinstance(dimensions, str):
             dimension_values = re.findall(r'\d+\.\d+|\d+', dimensions)
             # modification de l'ajout des valeurs des dimensions => ItemLoader
