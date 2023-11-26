@@ -91,3 +91,19 @@ ROBOTSTXT_OBEY = True
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+
+FEEDS_JSON = {
+    'pokedata.json': {
+        'format': 'json',
+    },
+}
+# vérifie que la configuration de setting.py est appropriée pour exporter vers un fichier CSV.
+FEEDS_CSV = {
+    'pokedata.csv': {
+        'format': 'csv',
+    },
+}
+# + spécifie l'ordre dans lequel les champs doivent apparaître dans le fichier CSV généré
+FEED_EXPORT_FIELDS = ['name', 'price', 'descript', 'tags', 'categories', 'sku', 'weight', 'length', 'width', 'height']
+
